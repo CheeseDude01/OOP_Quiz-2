@@ -1,6 +1,5 @@
 package predictive;
 
-import java.util.List;
 import java.util.Set;
 
 public class Sigs2WordsMap {

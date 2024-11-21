@@ -11,7 +11,7 @@ public class Model extends Observable {
     private String text;
     private String currentSignature = "";
     private String currentText = "";
-    private Dictionary dict = new DictionaryTreeImpl("words");
+    private Dictionary dict = new DictionaryTreeImpl();
     private List<String> signatures = new ArrayList<String>();
     private List<String> currentWordList;
     private int currentWordListIndex = 0;

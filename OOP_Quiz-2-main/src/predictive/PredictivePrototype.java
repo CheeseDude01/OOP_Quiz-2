@@ -59,7 +59,7 @@ public class PredictivePrototype {
     private static final String DICTIONARY_FILE = "words";
 
     // Method to check if a word is valid (only alphabetic characters)
-    private static boolean isValidWord(String word) {
+    static boolean isValidWord(String word) {
         return word != null && word.matches("[a-zA-Z]+"); // Match only alphabetic characters
     }
 

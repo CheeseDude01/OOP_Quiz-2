@@ -1,37 +1,37 @@
 package predictivegui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-// View class that renders the contents of the model
 public class View implements ActionListener, Observer {
-    private MainPanel panel = new MainPanel();
-    private Model model = new Model();
-    
+    private MainPanel panel;
+    private Model model;
+
+    public View() {
+        model = new Model();
+        panel = new MainPanel();
+        model.addObserver(this); // Menambahkan View sebagai Observer untuk Model
+
+        // Menambahkan action listener pada setiap tombol di panel
+        for (int i = 0; i < 12; i++) {
+            panel.buttons[i].addActionListener(this); // Menambahkan listener ke tombol
+        }
+    }
+
+    // Menginisialisasi tampilan
     public void init(String title) {
         JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        // Adding action listener to every button in panel
-        for (int i = 0; i < 12; i++) {
-            panel.buttons[i].addActionListener(this);
-        }
-        
-        // Adding this class as an observer for model
-        model.addObserver(this);
-        
-        // Setting JFrame and making it visible
         frame.setContentPane(panel);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    // Handling actions performed when pressing button
+    // Menangani aksi tombol yang diklik
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
@@ -41,16 +41,16 @@ public class View implements ActionListener, Observer {
             model.completeWord();
         } else if (s.equals("#")) {
             model.doBackspace();
-        } else if (!s.equals("1")) {
-            model.doTyping(s);
+        } else {
+            model.doTyping(s);  // Menangani input teks
         }
     }
 
-    // Set display text of panel if there is an update from model
+    // Update metode untuk Observer yang memperbarui tampilan dengan teks terbaru
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof Model) {
-            panel.setText("" + arg);
+            panel.setText((String) arg);  // Memperbarui tampilan dengan teks baru
         }
     }
 }

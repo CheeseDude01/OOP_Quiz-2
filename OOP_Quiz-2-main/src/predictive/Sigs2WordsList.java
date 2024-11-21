@@ -1,6 +1,5 @@
 package predictive;
 
-import java.util.List;
 import java.util.Set;
 import java.util.Collections;
 
@@ -14,7 +13,7 @@ public class Sigs2WordsList {
         }
 
         // Membuat instance dari DictionaryListImpl
-        DictionaryListImpl dictionary = new DictionaryListImpl("../src/words");
+        DictionaryListImpl dictionary = new DictionaryListImpl("words");
 
 
         // Menambahkan kata-kata dari file ke dictionary

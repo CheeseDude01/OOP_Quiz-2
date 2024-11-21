@@ -1,56 +1,53 @@
 package predictive;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
-import java.util.Set;
 
+/**
+ * Dictionary implementation using a tree-like structure for compact storage.
+ */
 public class DictionaryTreeImpl implements Dictionary {
-    private DictionaryTreeImpl[] children; // Cabang untuk setiap digit
-    private Set<String> words; // Kata pada node ini
+    private final Node root = new Node();
 
-    public DictionaryTreeImpl(String string) {
-        children = new HashMap<>();
-        words = new HashSet<>();
+    public DictionaryTreeImpl() {
+        try (BufferedReader br = new BufferedReader(new FileReader("words"))) {
+            String word;
+            while ((word = br.readLine()) != null) {
+                if (PredictivePrototype.isValidWord(word)) {
+                    addWord(word.toLowerCase());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-	@Override
-    public String wordToSignature(String word) {
-        return PredictivePrototype.wordToSignature(word);
+    private void addWord(String word) {
+        String signature = PredictivePrototype.wordToSignature(word);
+        Node current = root;
+        for (char c : signature.toCharArray()) {
+            current.children.putIfAbsent(c, new Node());
+            current = current.children.get(c);
+        }
+        current.words.add(word);
     }
 
     @Override
     public Set<String> signatureToWords(String signature) {
-        Set<String> resultSet = findWords(signature, 0);
-        return new ArrayList<>(resultSet);
+        Node current = root;
+        for (char c : signature.toCharArray()) {
+            current = current.children.get(c);
+            if (current == null) {
+                return Collections.emptySet();
+            }
+        }
+        return current.words;
     }
 
-    public int size() {
-        return words.size();
-    }
-
-    public void addWord(String word) {
-        String signature = wordToSignature(word);
-        DictionaryTreeImpl current = this;
-
-        for (char digit : signature.toCharArray()) {
-            current.children.putIfAbsent(digit, new DictionaryTreeImpl());
-            current = current.children.get(digit);
-        }
-
-        current.words.add(word);
-    }
-
-    private Set<String> findWords(String signature, int index) {
-        if (index == signature.length()) {
-            return words;
-        }
-
-        char digit = signature.charAt(index);
-        DictionaryTreeImpl child = children.get(digit);
-
-        if (child == null) {
-            return Collections.emptySet();
-        }
-
-        return child.findWords(signature, index + 1);
+    private static class Node {
+        private final Map<Character, Node> children = new HashMap<>();
+        private final Set<String> words = new HashSet<>();
     }
 }

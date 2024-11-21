@@ -6,29 +6,28 @@ import java.util.Collections;
 public class Sigs2WordsList {
 
     public static void main(String[] args) {
-        // Mengecek apakah ada argumen yang diberikan
+        // Check if any arguments are provided
         if (args.length == 0) {
             System.out.println("No signatures provided!");
             return;
         }
 
-        // Membuat instance dari DictionaryListImpl
+        // Create an instance of DictionaryListImpl
         DictionaryListImpl dictionary = new DictionaryListImpl("words");
 
+        // Add words from the file to the dictionary
+        // You can use dictionary.addWord(word) to add words
+        // For example, dictionary.addWord("hello"); to add the word and its signature
 
-        // Menambahkan kata-kata dari file ke dictionary
-        // Kamu bisa menggunakan dictionary.addWord(word) untuk menambahkan kata
-        // Misalnya, dictionary.addWord("hello"); untuk menambahkan kata dan signature-nya
-
-        // Menghitung waktu mulai eksekusi
+        // Record the start time of execution
         long startTime = System.nanoTime();
 
-        // Loop untuk setiap signature yang diberikan melalui argumen
+        // Loop through each signature provided as an argument
         for (String signature : args) {
-            // Mendapatkan daftar kata yang cocok dengan signature
+            // Get the list of words that match the signature
             Set<String> words = dictionary.signatureToWords(signature);
 
-            // Mencetak hasil
+            // Print the results
             System.out.print(signature + " : ");
             if (words.isEmpty()) {
                 System.out.println("No matching words");
@@ -37,14 +36,11 @@ public class Sigs2WordsList {
             }
         }
 
-        // Menghitung waktu akhir eksekusi
+        // Record the end time of execution
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
 
-        // Mencetak durasi eksekusi dalam detik
+        // Print the execution duration in seconds
         System.out.println("Execution time: " + duration / 1_000_000.0 + " seconds");
     }
 }
-
-
-

@@ -1,4 +1,0 @@
-StartTimer  0:14:35,48 
-StopTimer  0:14:35,64 
-StartTimer 17:04:17,18 
-StopTimer 17:04:17,40 
